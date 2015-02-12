@@ -1,6 +1,7 @@
 ## Best Practices
 
-Open your command prompt and **CD** into this README's directory (`foundation/14-best-practices`). In the `src` path is a file named `WorstPractices.java`. Open it and correct all of the ugliness you find within.
+Open your command prompt and **CD** into this README's directory (`foundation/14-best-practices`). 
+In the `src` path is a file named `WorstPractices.java`. Open it and correct all of the ugliness you find within.
 
 ## All Done?
 
