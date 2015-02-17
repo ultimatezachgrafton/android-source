@@ -82,13 +82,13 @@ public class Methods extends Object {
 	 * @return an array of booleans
 	 */
 	public boolean[] boolsRule(int floor, int[] someNumbers) {
-		boolean[] myReturnArray = new boolean[6];
-		for (int i; i < someNumbers.length; i++) {
-			if (floor > someNumbers[i]) {
-				myReturnArray = true;
+		boolean[] myReturnArray = new boolean[someNumbers.length];
+		for (int i = 0; i < someNumbers.length; i++) {
+			if (floor >= someNumbers[i]) {
+				myReturnArray[i] = true;
 			}
 		}
-		return myReturnArray[6];
+		return myReturnArray;
 	}
 
 	/*
@@ -110,16 +110,18 @@ public class Methods extends Object {
 	 * @return an array of length 2: {min, max}
 	 */
 	public int[] getMinAndMax(int[] someNumbers) {
+		int[] myReturnArray = new int[2];
 		int max = someNumbers[0];
 		int min = someNumbers[0];
-		for (int i = 0; i < someNumbers.length; i++)
+		for (int i = 0; i < someNumbers.length; i++) {
 			if (someNumbers[i] > max) {
-				return max;
-			}
+				myReturnArray[1] = max;
+			} 
 			if (someNumbers[i] < min) {
-				return min;
+				myReturnArray[0] = min;
 			}
-		return new int[2];
+		}
+		return myReturnArray;
 	}
 
 
