@@ -84,7 +84,7 @@ public class Methods extends Object {
 	public boolean[] boolsRule(int floor, int[] someNumbers) {
 		boolean[] myReturnArray = new boolean[someNumbers.length];
 		for (int i = 0; i < someNumbers.length; i++) {
-			if (floor >= someNumbers[i]) {
+			if (floor <= someNumbers[i]) {
 				myReturnArray[i] = true;
 			}
 		}
@@ -115,12 +115,14 @@ public class Methods extends Object {
 		int min = someNumbers[0];
 		for (int i = 0; i < someNumbers.length; i++) {
 			if (someNumbers[i] > max) {
-				myReturnArray[1] = max;
+				max = someNumbers[i];
 			} 
 			if (someNumbers[i] < min) {
-				myReturnArray[0] = min;
+				min = someNumbers[i];
 			}
 		}
+		myReturnArray[0] = min;
+		myReturnArray[1] = max;
 		return myReturnArray;
 	}
 
