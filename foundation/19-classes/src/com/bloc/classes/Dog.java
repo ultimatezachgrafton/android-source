@@ -29,8 +29,6 @@ class Dog {
 	int mMeals;
 	// how many plays
 	int mPlays;
-	// how many cuts
-	int mCuts;
 	/*
 	 * getHairLength
 	 *
@@ -110,7 +108,8 @@ class Dog {
  	 *	ASSIGNMENT:
  	 *	Create the setSize method
 	/************************************************/
-	void setSize(String mSize) {
+	void setSize(String size) {
+		mSize = size;
 	}
 	/*
 	 * getAge
@@ -213,13 +212,13 @@ class Dog {
 		mMeals += 1;
 		if (mMeals % 3 == 0) {
 			if (mSize == "tiny") {
-				mSize == "small";
+				mSize = "small";
 			}
-			elif (mSize == "small") {
-				mSize == "average";
+			else if (mSize == "small") {
+				mSize = "average";
 			}
-			elif (mSize == "average") {
-				mSize == "large";
+			else if (mSize == "average") {
+				mSize = "large";
 			} 
 		}
 	}
@@ -248,7 +247,6 @@ class Dog {
 		String[] mSizeIndex = {"large", "large", "large", "large", "large", "large", 
 		"average", "average", "average", "average", "average", "average", "small", 
 		"small", "small", "small", "small", "small", "tiny"};
-		mSize = mSizeIndex[mPlays];
 	}
 
 	/*
