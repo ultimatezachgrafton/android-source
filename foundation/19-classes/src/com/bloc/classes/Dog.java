@@ -211,9 +211,17 @@ class Dog {
 	void feed() {
 		mWeight += WEIGHT_GAIN;
 		mMeals += 1;
-		String[] mSizeIndex = {"tiny", "tiny", "tiny", "small", "small", "small", 
-		"average", "average", "average", "large"};
-		mSize = mSizeIndex[mMeals];
+		if (mMeals % 3 == 0) {
+			if (mSize == "tiny") {
+				mSize == "small";
+			}
+			elif (mSize == "small") {
+				mSize == "average";
+			}
+			elif (mSize == "average") {
+				mSize == "large";
+			} 
+		}
 	}
 	/*
 	 * play
@@ -257,8 +265,8 @@ class Dog {
  	 *	ASSIGNMENT:
  	 *	Create the cutHair method
 	/************************************************/
-	void cut() {
-		if (mHairLength > 0f) {
+	void cutHair() {
+		if ((mHairLength - HAIR_CUT_LENGTH) >= 0f) {
 			mHairLength -= HAIR_CUT_LENGTH; 
 		}
 	}
