@@ -208,7 +208,7 @@ class Dog {
  	 *	ASSIGNMENT:
  	 *	Create the feed method
 	/************************************************/
-	void feed(int mMeals) {
+	void feed() {
 		mWeight += WEIGHT_GAIN;
 		mMeals += 1;
 		String[] mSizeIndex = {"tiny", "tiny", "tiny", "small", "small", "small", 
@@ -232,7 +232,7 @@ class Dog {
  	 *	ASSIGNMENT:
  	 *	Create the play method
 	/************************************************/
-	void play(int mPlays) {
+	void play() {
 		mPlays += 1;
 		if (mWeight > MIN_WEIGHT) {
 			mWeight -= WEIGHT_LOSS;
@@ -257,7 +257,7 @@ class Dog {
  	 *	ASSIGNMENT:
  	 *	Create the cutHair method
 	/************************************************/
-	void cut(int mCuts) {
+	void cut() {
 		if (mHairLength > 0f) {
 			mHairLength -= HAIR_CUT_LENGTH; 
 		}
