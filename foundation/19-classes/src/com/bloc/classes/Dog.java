@@ -25,8 +25,12 @@ class Dog {
 	/************************************************
 	 * ADD MEMBER VARIABLES HERE IF NECESSARY	
 	/************************************************/
-
-
+	// how many meals
+	int mMeals;
+	// how many plays
+	int mPlays;
+	// how many cuts
+	int mCuts;
 	/*
 	 * getHairLength
 	 *
@@ -36,7 +40,9 @@ class Dog {
  	 *	ASSIGNMENT:
  	 *	Create the getHairLength method
 	/************************************************/
-
+	float getHairLength() {
+		return mHairLength;
+	} 
 	/*
 	 * setHairLength
 	 *
@@ -49,7 +55,9 @@ class Dog {
  	 *	ASSIGNMENT:
  	 *	Create the setHairLength method
 	/************************************************/
-
+	void setHairLength (float hairLength) {
+		mHairLength = hairLength;
+	}
 	/*
 	 * getGender
 	 *
@@ -60,7 +68,9 @@ class Dog {
  	 *	ASSIGNMENT:
  	 *	Create the getGender method
 	/************************************************/
-
+	String getGender() {
+		return mGender;
+	}
 	/*
 	 * setGender
 	 *
@@ -73,7 +83,9 @@ class Dog {
  	 *	ASSIGNMENT:
  	 *	Create the setGender method
 	/************************************************/
-
+	void setGender(String gender) {
+		mGender = gender;
+	}
 	/*
 	 * getSize
 	 *
@@ -83,7 +95,9 @@ class Dog {
  	 *	ASSIGNMENT:
  	 *	Create the getSize method
 	/************************************************/
-
+	String getSize() {
+		return mSize;
+	}
 	/*
 	 * setSize
 	 *
@@ -96,7 +110,8 @@ class Dog {
  	 *	ASSIGNMENT:
  	 *	Create the setSize method
 	/************************************************/
-
+	void setSize(String mSize) {
+	}
 	/*
 	 * getAge
 	 *
@@ -106,7 +121,9 @@ class Dog {
  	 *	ASSIGNMENT:
  	 *	Create the getAge method
 	/************************************************/
-
+	int getAge() {
+		return mAge;
+	}
 	/*
 	 * setAge
 	 *
@@ -119,7 +136,8 @@ class Dog {
  	 *	ASSIGNMENT:
  	 *	Create the setAge method
 	/************************************************/
-
+	void setAge(int mAge) {
+	}
 	/*
 	 * getWeight
 	 *
@@ -129,7 +147,9 @@ class Dog {
  	 *	ASSIGNMENT:
  	 *	Create the getWeight method
 	/************************************************/
-
+	float getWeight() {
+		return mWeight;
+	}
 	/*
 	 * setWeight
 	 *
@@ -142,7 +162,8 @@ class Dog {
  	 *	ASSIGNMENT:
  	 *	Create the setWeight method
 	/************************************************/
-
+	void setWeight(float weight) {
+	}
 	/*
 	 * getColor
 	 *
@@ -152,7 +173,9 @@ class Dog {
  	 *	ASSIGNMENT:
  	 *	Create the getColor method
 	/************************************************/
-
+	String getColor() {
+		return mColor;
+	}
 	/*
 	 * setColor
 	 *
@@ -165,7 +188,8 @@ class Dog {
  	 *	ASSIGNMENT:
  	 *	Create the setColor method
 	/************************************************/
-
+	void setColor(String mColor) {
+	}
 	/*
 	 * feed
 	 *
@@ -184,7 +208,13 @@ class Dog {
  	 *	ASSIGNMENT:
  	 *	Create the feed method
 	/************************************************/
-
+	void feed(int mMeals) {
+		mWeight += WEIGHT_GAIN;
+		mMeals += 1;
+		String[] mSizeIndex = {"tiny", "tiny", "tiny", "small", "small", "small", 
+		"average", "average", "average", "large"};
+		mSize = mSizeIndex[mMeals];
+	}
 	/*
 	 * play
 	 *
@@ -202,6 +232,16 @@ class Dog {
  	 *	ASSIGNMENT:
  	 *	Create the play method
 	/************************************************/
+	void play(int mPlays) {
+		mPlays += 1;
+		if (mWeight > MIN_WEIGHT) {
+			mWeight -= WEIGHT_LOSS;
+		}
+		String[] mSizeIndex = {"large", "large", "large", "large", "large", "large", 
+		"average", "average", "average", "average", "average", "average", "small", 
+		"small", "small", "small", "small", "small", "tiny"};
+		mSize = mSizeIndex[mPlays];
+	}
 
 	/*
 	 * cutHair
@@ -217,5 +257,9 @@ class Dog {
  	 *	ASSIGNMENT:
  	 *	Create the cutHair method
 	/************************************************/
-
+	void cut(int mCuts) {
+		if (mHairLength > 0f) {
+			mHairLength -= HAIR_CUT_LENGTH; 
+		}
+	}
 }

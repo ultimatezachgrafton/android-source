@@ -1,6 +1,8 @@
 ## Classes
 
-Open your command prompt and `cd` into this README's directory (`foundation/19-classes`). Edit `Dog.java` and fill in the portions where specified by comments. You're going to be writing _setters_ and _getters_.
+Open your command prompt and `cd` into this README's directory (`foundation/19-classes`). 
+Edit `Dog.java` and fill in the portions where specified by comments. 
+You're going to be writing _setters_ and _getters_.
 
 After you've finished, compile your Java code by running the following command:
 
