@@ -135,7 +135,8 @@ class Dog {
  	 *	ASSIGNMENT:
  	 *	Create the setAge method
 	/************************************************/
-	void setAge(int mAge) {
+	void setAge(int age) {
+		mAge = age;
 	}
 	/*
 	 * getWeight
@@ -162,6 +163,7 @@ class Dog {
  	 *	Create the setWeight method
 	/************************************************/
 	void setWeight(float weight) {
+		mWeight = weight;
 	}
 	/*
 	 * getColor
@@ -187,7 +189,8 @@ class Dog {
  	 *	ASSIGNMENT:
  	 *	Create the setColor method
 	/************************************************/
-	void setColor(String mColor) {
+	void setColor(String color) {
+		mColor = color;
 	}
 	/*
 	 * feed
@@ -244,9 +247,17 @@ class Dog {
 		if (mWeight > MIN_WEIGHT) {
 			mWeight -= WEIGHT_LOSS;
 		}
-		String[] mSizeIndex = {"large", "large", "large", "large", "large", "large", 
-		"average", "average", "average", "average", "average", "average", "small", 
-		"small", "small", "small", "small", "small", "tiny"};
+		if (mPlays % 6 == 0) {
+			if (mSize == "large") {
+				mSize = "average";
+			}
+			else if (mSize == "average") {
+				mSize = "small";
+			}
+			else if (mSize == "small") {
+				mSize = "tiny";
+			} 
+		}
 	}
 
 	/*
