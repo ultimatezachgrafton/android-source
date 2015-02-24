@@ -17,8 +17,11 @@ class GreatDane extends Dog {
 	void feed() {
 		mWeight += WEIGHT_GAIN;
 		mMeals += 1;
-		if (mMeals % 3 == 0) {
-			mSize = sizeArray[mMeals];
+		if (mMeals < 3) {
+			mSize = "tiny";
+		}
+		else if (mMeals % 3 == 0) {
+			mSize = sizeArray[(mMeals/3)];
 		}
 	}
 }

@@ -20,6 +20,7 @@ class Ensemble extends Object {
 	/************************************************/
 	Ensemble(Artist[] artists) {
 		mArtists = artists;
+		mName = "Antonio Carella and the Rippers";
 	}
 
 	/*
