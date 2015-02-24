@@ -7,7 +7,8 @@ Open your command prompt and `cd` into this README's directory (`foundation/21-o
 * `Song.java`
 * `PopSong.java`
 
-Each of these classes are missing their constructors, fill them in where the comments have indicated. After you've finished, compile your Java code by running the following command:
+Each of these classes are missing their constructors, fill them in where the comments have indicated. 
+After you've finished, compile your Java code by running the following command:
 
 ```bash
 $ javac -d bin src/com/bloc/objects/*
