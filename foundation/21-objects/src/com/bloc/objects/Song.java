@@ -23,9 +23,9 @@ class Song extends Object {
 		Artist[] artistArray = new Artist[1];
 		Artist mArtist = new Artist("Antonio", "Carella");
 		artistArray[0] = mArtist; 
-		Ensemble mEnsemble = new Ensemble(artistArray);
-		String mTitle = "Antonio Carella, the Sun God";
-		int mYearReleased = 1984;
+		mEnsemble = new Ensemble(artistArray);
+		mTitle = "Antonio Carella, the Sun God";
+		mYearReleased = 1984;
 	}
 
 	/*
