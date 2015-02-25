@@ -20,9 +20,9 @@ class Song extends Object {
 	 *	Create the first Song constructor
 	/************************************************/
 	Song() {
-		Artist mArtist = new Artist();
 		Artist[] artistArray = new Artist[1];
-		Artist mArtist("Antonio", "Carella") = artistArray[0];
+		Artist mArtist = new Artist("Antonio", "Carella");
+		artistArray[0] = mArtist; 
 		Ensemble mEnsemble = new Ensemble(artistArray);
 		String mTitle = "Antonio Carella, the Sun God";
 		int mYearReleased = 1984;
@@ -40,7 +40,9 @@ class Song extends Object {
 	 *	ASSIGNMENT:
 	 *	Create the second Song constructor
 	/************************************************/
-	Song(Ensemble mEnsemble, String mTitle) {
+	Song(Ensemble ensemble, String title) {
+		mEnsemble = ensemble;
+		mTitle = title;
 		mYearReleased = 0;
 	}
 
@@ -55,8 +57,10 @@ class Song extends Object {
 	 *	ASSIGNMENT:
 	 *	Create the third Song constructor
 	/************************************************/
-	Song(Ensemble mEnsemble, String mTitle, int mYearReleased) {
-
+	Song(Ensemble ensemble, String title, int yearReleased) {
+		mEnsemble = ensemble;
+		mTitle = title;
+		mYearReleased = yearReleased;
 	}
 
 }

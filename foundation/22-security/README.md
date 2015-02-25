@@ -1,6 +1,8 @@
 ## Security And Packages
 
-Open your command prompt and `cd` into this README's directory (`foundation/22-security`). The sample code **does not compile**. Fix the access and package organization of this project. You will need to move or modify **all files**, including `Main.java`.
+Open your command prompt and `cd` into this README's directory (`foundation/22-security`). 
+The sample code **does not compile**. Fix the access and package organization of this project. 
+You will need to move or modify **all files**, including `Main.java`.
 
 Begin by attempting to compile the application using the following command:
 
@@ -8,7 +10,8 @@ Begin by attempting to compile the application using the following command:
 $ javac -d bin src/com/bloc/securitypackages/*/*.java src/com/bloc/securitypackages/*.java
 ```
 
-All of the compilation errors may be fixed by importing and assigning proper access modifiers. Continue to tweak the project until it compiles successfully. Then `cd` into the `bin/` directory:
+All of the compilation errors may be fixed by importing and assigning proper access modifiers. 
+Continue to tweak the project until it compiles successfully. Then `cd` into the `bin/` directory:
 
 ```bash
 $ cd bin/

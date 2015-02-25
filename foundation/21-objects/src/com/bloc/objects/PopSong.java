@@ -14,8 +14,14 @@ class PopSong extends Song {
 	 *	ASSIGNMENT:
 	 *	Create the first PopSong constructor
 	/************************************************/
-	PopSong(String mEnsemble, String mTitle, int mYearRelease, int mWeeksOnBillboard) {
-
+	PopSong() {
+		Artist[] artistArray = new Artist[1];
+		Artist mArtist = new Artist("Antonio", "Carella");
+		artistArray[0] = mArtist; 
+		Ensemble mEnsemble = new Ensemble(artistArray);
+		String mTitle = "Daddy Why Did You Eat My Fries?";
+		int mYearRelease = 2009;
+		int mWeeksOnBillboard = 500;
 	}
 
 	/*
@@ -30,7 +36,9 @@ class PopSong extends Song {
 	 *	ASSIGNMENT:
 	 *	Create the second PopSong constructor
 	/************************************************/
-	PopSong(Ensemble mEnsemble, String mTitle) {
+	PopSong(Ensemble ensemble, String title) {
+		mEnsemble = ensemble;
+		mTitle = title;
 		int mYearRelease = 0;
 	}
 
@@ -47,7 +55,10 @@ class PopSong extends Song {
 	 *	ASSIGNMENT:
 	 *	Create the third PopSong constructor
 	/************************************************/
-	PopSong(Ensemble mEnsemble, String mTitle, int mYearRelease) {
+	PopSong(Ensemble ensemble, String title, int yearReleased) {
+		Ensemble mEnsemble = ensemble;
+		String mTitle = title;
+		int mYearRelease = yearReleased;
 		int mWeeksOnBillboard = 0;
 	}
 
@@ -64,7 +75,10 @@ class PopSong extends Song {
 	 *	ASSIGNMENT:
 	 *	Create the fourth PopSong constructor
 	/************************************************/
-	PopSong(Ensemble mEnsemble, String mTitle, int mYearRelease, int mWeeksOnBillboard) {
-
+	PopSong(Ensemble ensemble, String title, int yearReleased, int weeksOnBillboard) {
+		Ensemble mEnsemble = ensemble;
+		String mTitle = title;
+		int mYearRelease = yearReleased;
+		int mWeeksOnBillboard = weeksOnBillboard;
 	}
 }
