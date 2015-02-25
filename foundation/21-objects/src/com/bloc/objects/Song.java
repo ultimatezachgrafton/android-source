@@ -20,9 +20,12 @@ class Song extends Object {
 	 *	Create the first Song constructor
 	/************************************************/
 	Song() {
-		Ensemble mEnsemble;
-		String mTitle;
-		int mYearReleased;
+		Artist mArtist = new Artist();
+		Artist[] artistArray = new Artist[1];
+		Artist mArtist("Antonio", "Carella") = artistArray[0];
+		Ensemble mEnsemble = new Ensemble(artistArray);
+		String mTitle = "Antonio Carella, the Sun God";
+		int mYearReleased = 1984;
 	}
 
 	/*
