@@ -9,13 +9,13 @@ package com.bloc.inherit;
 /************************************************/
 class Chihuahua extends Dog {
 	final float WEIGHT_GAIN = 0.25f;
-	int mMeals;
+	int mFeedCounter;
 
 	@Override
 	void feed() {
 		mWeight += WEIGHT_GAIN;
-		mMeals += 1;
-		if (mMeals % 5 == 0) {
+		mFeedCounter += 1;
+		if (mFeedCounter % 5 == 0) {
 			if (mSize == "tiny") {
 				mSize = "small";
 			}

@@ -10,16 +10,15 @@ package com.bloc.inherit;
 class GoldenRetriever extends Dog {
 	final float MIN_WEIGHT = 1.25f;
 	final float WEIGHT_LOSS = 0.2f;
-	final float WEIGHT_GAIN = 0.25f;
-	int mPlays;
+	int mPlayCounter;
 
 	@Override
 	void play() {
-		mPlays += 1;
+		mPlayCounter += 1;
 		if (mWeight > MIN_WEIGHT) {
 			mWeight -= WEIGHT_LOSS;
 		}
-		if (mPlays % 3 == 0) {
+		if (mPlayCounter % 3 == 0) {
 			if (mSize == "large") {
 				mSize = "average";
 			}
