@@ -1,4 +1,4 @@
-﻿package com.bloc.loops;
+package com.bloc.loops;
 
 import java.io.BufferedReader;
 import java.io.IOException;

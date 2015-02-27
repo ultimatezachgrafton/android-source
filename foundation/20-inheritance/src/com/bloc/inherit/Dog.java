@@ -236,6 +236,8 @@ abstract class Dog {
 			return 2;
 		} else if( "large".equals(size) ) {
 			return 3;
+		} else if( "huge".equals(size) ) {
+			return 4;
 		} else {
 			return 2;
 		}
