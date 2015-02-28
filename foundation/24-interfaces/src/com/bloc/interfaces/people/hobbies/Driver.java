@@ -6,6 +6,7 @@ package com.bloc.interfaces.people.hobbies;
 /************************************************/
 
 public interface Driver {
+
 	/*
 	 * getInCar
 	 *
@@ -13,6 +14,12 @@ public interface Driver {
 	 *
 	 * @return nothing
 	 */
+	public void getInCar();
+	
+	public void startEngine();
+	
+	public void driveFast();
+
 
 	/*
 	 * startEngine
