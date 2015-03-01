@@ -69,7 +69,7 @@ public class Main extends Object {
 			someObjects = FunMethods.remove(someObjects, 3);
 		}
 		catch (Exception z) {
-			System.out.println("wuh oh.");
+			System.out.println("double wuh oh.");
 		}
 		
 	}
