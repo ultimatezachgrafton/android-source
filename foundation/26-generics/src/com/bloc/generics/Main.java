@@ -7,6 +7,9 @@ public class Main extends Object {
 	public static void main(String [] args) {
 
 		ToyBox toyBox = new ToyBox();
+
+		Toy<mToy> ToyBox = new Toy<mToy>();
+
 		
 		/************************************************
  		 *	ASSIGNMENT:
