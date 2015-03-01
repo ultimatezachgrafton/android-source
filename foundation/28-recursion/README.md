@@ -1,6 +1,7 @@
 ## Recursion
 
-Open your command prompt and `cd` into this README's directory (`foundation/28-recursion`). Edit the `RecursionUtils.java` file and implement the recursive methods found within.
+Open your command prompt and `cd` into this README's directory (`foundation/28-recursion`). 
+Edit the `RecursionUtils.java` file and implement the recursive methods found within.
 
 After you've finished, compile your code by running the following command:
 

@@ -25,13 +25,10 @@ public class FavoritePastries {
 	 *	between rating and pastry: HashMap<Integer, List<Pastry>>
 	/************************************************/
 
-
+	private HashMap<Pastry, Integer> mPastryMap;
 	public FavoritePastries() {
-		/************************************************
- 	 	 *	WORK HERE
-		/************************************************/
+		mPastryMap = new HashMap<Pastry, Integer>();
 	}
-
 	/* 
 	 * addPastry
 	 *
@@ -48,9 +45,7 @@ public class FavoritePastries {
 	 * @return nothing
 	 */
 	public void addPastry(Pastry pastry, int rating) {
-		/************************************************
- 	 	 *	WORK HERE
-		/************************************************/
+		mPastryMap.put(pastry, rating);
 	}
 
 	/* 
@@ -66,9 +61,9 @@ public class FavoritePastries {
 	 *		   false otherwise
 	 */
 	public boolean removePastry(Pastry pastry) {
-		/************************************************
- 	 	 *	WORK HERE, you must modify the return value
-		/************************************************/
+		if (mPastryMap.containsKey(pastry)) {
+			return mPastryMap.remove(pastry) > 0;
+		}
 		return false;
 	}
 
@@ -86,10 +81,11 @@ public class FavoritePastries {
 	 * @return the rating associated with this Pastry or
 	 *		   -1 if not found among FavoritePastries
 	 */
+
 	public int getRatingForPastry(Pastry pastry) {
-		/************************************************
- 	 	 *	WORK HERE, you must modify the return value
-		/************************************************/
+		if (mPastryMap.containsKey(pastry)) {
+			return (mPastryMap.get(pastry));	
+		}
 		return -1;
 	}
 
@@ -110,10 +106,13 @@ public class FavoritePastries {
 	 *         found
 	 */
 	public Collection<Pastry> getPastriesForRating(int rating) {
-		/************************************************
- 	 	 *	WORK HERE, you must modify the return value
-		/************************************************/
-		return null;
+		ArrayList<Pastry> ratedPastries = new ArrayList<Pastry>();
+		for (Pastry pastry : mPastryMap.keySet()) {
+			if (mPastryMap.get(pastry) == rating) {
+				ratedPastries.add(pastry);
+			}
+		}
+		return ratedPastries;
 	}
 
 }

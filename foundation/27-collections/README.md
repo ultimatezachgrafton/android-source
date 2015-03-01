@@ -1,6 +1,8 @@
 ## Collections
 
-Open your command prompt and `cd` into this README's directory (`foundation/27-collections`). Edit `FavoritePastries.java` and implement the methods which have been indicated. After you've finished, compile your code by running the following command:
+Open your command prompt and `cd` into this README's directory (`foundation/27-collections`). 
+Edit `FavoritePastries.java` and implement the methods which have been indicated. After you've finished, 
+compile your code by running the following command:
 
 ```bash
 $ javac -d bin src/com/bloc/collections/*.java 
