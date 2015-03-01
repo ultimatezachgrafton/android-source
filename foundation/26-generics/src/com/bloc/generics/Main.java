@@ -8,8 +8,17 @@ public class Main extends Object {
 
 		ToyBox toyBox = new ToyBox();
 
-		Toy<mToy> ToyBox = new Toy<mToy>();
+		ActionFigure antonioCarella = new ActionFigure();
+		Book flowersForAlgernon = new Book();
+		Spoon shinySpoon = new Spoon();
 
+		Toy<ActionFigure> blocSuperMentors = new Toy<ActionFigure>(antonioCarella);
+		Toy<Book> superSadBooks = new Toy<Book>(flowersForAlgernon);
+		Toy<Spoon> heartbreakingBeauty = new Toy<Spoon>(shinySpoon);
+
+		toyBox.addToy(blocSuperMentors);	
+		toyBox.addToy(superSadBooks);
+		toyBox.addToy(heartbreakingBeauty);
 		
 		/************************************************
  		 *	ASSIGNMENT:
