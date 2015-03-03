@@ -14,8 +14,10 @@ public class Main extends Object {
 		 *	Perform the following block of code on a separate
 		 *	Thread, use the ImageGetter class.
 		/************************************************/
+	ImageGetter imageGetter = new ImageGetter("https://www.google.com/images/srpr/logo11w.png", true);
+	imageGetter.start();
 
-		try {
+	/*	try {
 			File existingImage = new File("google_logo.png");
 			if (existingImage.exists()) {
 				existingImage.delete();
