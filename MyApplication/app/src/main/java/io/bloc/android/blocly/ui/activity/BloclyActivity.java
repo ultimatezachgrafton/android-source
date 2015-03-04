@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import io.bloc.android.blocly.BloclyApplication;
 import io.bloc.android.blocly.R;
 
 /**
