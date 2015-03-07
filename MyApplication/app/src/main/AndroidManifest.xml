@@ -16,4 +16,24 @@
 
     </application>
 
+    TextView textElement;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        TextView newtext = (TextView) findViewById(R.id.idName);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        TextView textElement = (TextView) findViewById(R.id.this_is_id_name);
+        textElement.setText("I love you"); //leave this line to assign a specific text
+        textElement.setText(R.string.my_love_text); //leave this line to assign a string resource
+    }
+
 </manifest>
