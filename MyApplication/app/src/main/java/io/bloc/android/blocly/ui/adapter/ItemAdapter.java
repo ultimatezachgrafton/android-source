@@ -1,12 +1,16 @@
 package io.bloc.android.blocly.ui.adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import io.bloc.android.blocly.BloclyApplication;
+import io.bloc.android.blocly.R;
+import io.bloc.android.blocly.api.DataSource;
 import io.bloc.android.blocly.api.model.RssFeed;
+import io.bloc.android.blocly.api.model.RssItem;
 
 /**
  * Created by Zach on 3/8/2015.

@@ -3,16 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
-
-<TextView
-
-    android:id="@+id/tv_rss_item_title"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="New York Attacked By Giant Squid"
-    android:textSize="18sp"
-    android:textColor="@color/text_primary"/>
+    android:padding="22dp">
 
 <TextView
 android:id="@+id/tv_rss_item_feed_title"
@@ -21,14 +12,24 @@ android:layout_height="wrap_content"
 
     android:layout_below="@+id/tv_rss_item_title"
 
-    android:layout_marginTop="8dp"
+    android:layout_marginTop="12dp"
     android:text="New York Times"
 
     android:singleLine="true"
     android:textSize="14sp"
     android:textColor="@color/text_secondary"/>
 
-<TextView
+    <TextView
+
+        android:id="@+id/tv_rss_item_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="New York Attacked By Giant Squid"
+        android:textSize="18sp"
+        android:textColor="@color/text_primary"/>
+
+
+    <TextView
 android:id="@+id/tv_rss_item_content"
 android:layout_width="match_parent"
 android:layout_height="wrap_content"
@@ -39,5 +40,3 @@ android:textSize="14sp"
 android:textColor="@color/text_primary"/>
 
     </RelativeLayout>
-
-</RelativeLayout>
