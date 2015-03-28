@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-
-    android:padding="16dp">
+    android:padding="16dp"
+    android:background="@drawable/list_selector">
 
     <FrameLayout
         android:id="@+id/fl_rss_item_image_header"
@@ -16,45 +16,62 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-
-        android:indeterminateOnly="true"
-        android:indeterminate="true"/>
+            android:indeterminateOnly="true"
+            android:indeterminate="true"/>
 
         <ImageView
             android:id="@+id/iv_rss_item_image"
             android:layout_width="match_parent"
             android:layout_height="140dp"
-
-        android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop"/>
 
     </FrameLayout>
 
     <io.bloc.android.blocly.ui.widget.RobotoTextView
         style="@style/Headline"
-    android:id="@+id/tv_rss_item_title"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+        android:id="@+id/tv_rss_item_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/fl_rss_item_image_header"
         android:text="New York Attacked By Giant Squid"/>
 
+    <CheckBox
+        android:id="@+id/cb_rss_item_check_mark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@drawable/btn_check_checkbox"
+        android:layout_marginBottom="16dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/tv_rss_item_title"/>
+
+    <CheckBox
+        android:id="@+id/cb_rss_item_favorite_star"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@drawable/btn_star_checkbox"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/cb_rss_item_check_mark"/>
+
     <io.bloc.android.blocly.ui.widget.RobotoTextView
         style="@style/Caption"
-android:id="@+id/tv_rss_item_feed_title"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-
-    android:layout_below="@+id/tv_rss_item_title"
-
-    android:layout_marginTop="8dp"
-    android:text="New York Times"/>
+        android:id="@+id/tv_rss_item_feed_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_rss_item_title"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_toLeftOf="@+id/cb_rss_item_check_mark"
+        android:text="New York Times"/>
 
     <io.bloc.android.blocly.ui.widget.RobotoTextView
         style="@style/Body1"
-android:id="@+id/tv_rss_item_content"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:layout_below="@+id/tv_rss_item_feed_title"
-android:text="A giant squid appeared abruptly today in lower Manhattan. The squid appeared peaceful at first but violence quickly escalated after a tourist attempted to have their photo taken with the \'big city octopus\'."
-android:layout_marginTop="8dp"/>
+        android:id="@+id/tv_rss_item_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_rss_item_feed_title"
+        android:text="A giant squid appeared abruptly today in lower Manhattan. The squid appeared peaceful at first but violence quickly escalated after a tourist attempted to have their photo taken with the \'big city octopus\'."
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_toLeftOf="@+id/cb_rss_item_check_mark"/>
 
 </LinearLayout>
