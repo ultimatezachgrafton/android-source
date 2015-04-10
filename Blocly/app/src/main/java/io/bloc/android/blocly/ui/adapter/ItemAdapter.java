@@ -102,19 +102,24 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemAdapterVie
         }
 
         @Override
-        public void onLoadingStarted(String imageUri, View view) {}
-
-        @Override
-        public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-            Log.e(TAG, "onLoadingFailed: " + failReason.toString() + " for URL: " + imageUri);
+        public void onLoadingStarted(String imageUrl, View view) {
+            animateImage(false);
         }
 
         @Override
-        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-            if (imageUri.equals(rssItem.getImageUrl())) {
+        public void onLoadingFailed(String imageUrl, View view, FailReason failReason) {
+            Log.e(TAG, "onLoadingFailed: " + failReason.toString() + " for URL: " + imageUrl);
+            Log.d(TAG, "debug here:" + failReason.toString() + " for URL: " + imageUrl);
+            animateImage(false);
+        }
+
+        @Override
+        public void onLoadingComplete(String imageUrl, View view, Bitmap loadedImage) {
+            if (imageUrl.equals(rssItem.getImageUrl())) {
                 headerImage.setImageBitmap(loadedImage);
                 headerImage.setVisibility(View.VISIBLE);
             }
+            animateImage(true);
         }
 
         @Override
@@ -178,6 +183,49 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemAdapterVie
         });
         contentExpanded = expand;
     }
+
+        private void animateImage(final boolean expand) {
+            if ((expand && contentExpanded) || (!expand && !contentExpanded)) {
+                return;
+            }
+            int startingHeight = headerImage.getMeasuredHeight();
+            int finalHeight = content.getMeasuredHeight();
+            if (expand) {
+                startingHeight = finalHeight;
+                headerImage.setAlpha(0f);
+                headerImage.setVisibility(View.VISIBLE);
+                headerImage.measure(
+                        View.MeasureSpec.makeMeasureSpec(content.getWidth(), View.MeasureSpec.EXACTLY),
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                );
+                finalHeight = headerImage.getMeasuredHeight();
+            } else {
+                content.setVisibility(View.VISIBLE);
+            }
+            startAnimator(startingHeight, finalHeight, new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                    float animatedFraction = valueAnimator.getAnimatedFraction();
+                    float wrapperAlpha = expand ? animatedFraction : 1f - animatedFraction;
+                    float contentAlpha = 1f - wrapperAlpha;
+
+                    headerImage.setAlpha(wrapperAlpha);
+                    content.setAlpha(contentAlpha);
+                    headerImage.getLayoutParams().height = animatedFraction == 1f ?
+                            ViewGroup.LayoutParams.WRAP_CONTENT :
+                            (Integer) valueAnimator.getAnimatedValue();
+                    headerImage.requestLayout();
+                    if (animatedFraction == 1f) {
+                        if (expand) {
+                            content.setVisibility(View.GONE);
+                        } else {
+                            headerImage.setVisibility(View.GONE);
+                        }
+                    }
+                }
+            });
+            contentExpanded = expand;
+        }
 
    private void startAnimator(int start, int end, ValueAnimator.AnimatorUpdateListener animatorUpdateListener) {
         ValueAnimator valueAnimator = ValueAnimator.ofInt(start, end);
