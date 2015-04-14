@@ -12,7 +12,14 @@
     </style>
 
     <style name="DrawerArrow" parent="Base.Widget.AppCompat.DrawerArrowToggle">
-        <item name="color">@color/actionBarItems</item>
+        <item name="color">@color/actionBarItems2</item>
+        <item name="thickness">5dp</item>
+        <item name="barSize">25dp</item>
+        <item name="gapBetweenBars">5dp</item>
+        <item name="topBottomBarArrowSize">15dp</item>
+        <item name="middleBarArrowSize">20dp</item>
+        <item name="drawableSize">30dp</item>
+        <item name="spinBars">false</item>
     </style>
 
     <style name="Headline">

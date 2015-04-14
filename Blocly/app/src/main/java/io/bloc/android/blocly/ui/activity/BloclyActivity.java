@@ -42,6 +42,7 @@ public class BloclyActivity extends ActionBarActivity {
         drawerLayout = (DrawerLayout) findViewById(R.id.dl_activity_blocly);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, 0, 0);
         drawerLayout.setDrawerListener(drawerToggle);
+        drawerLayout.openDrawer(1);
     }
 
     @Override
