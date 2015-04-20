@@ -5,11 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import io.bloc.android.blocly.BloclyApplication;
 import io.bloc.android.blocly.R;
 import io.bloc.android.blocly.api.model.RssFeed;
+import io.bloc.android.blocly.ui.activity.BloclyActivity;
 
 /**
  * Created by Zach on 4/16/2015.
@@ -22,6 +22,8 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
         NAVIGATION_OPTION_FAVORITES,
         NAVIGATION_OPTION_ARCHIVED
     }
+
+    BloclyActivity bloclyActivity = new BloclyActivity();
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int position) {
@@ -77,7 +79,7 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
 
             if (position < NavigationOption.values().length) {
 // #5
-                int[] titleTexts = new int[] {R.string.navigation_option_inbox,
+                int[] titleTexts = new int[]{R.string.navigation_option_inbox,
                         R.string.navigation_option_favorites,
                         R.string.navigation_option_archived};
                 title.setText(titleTexts[position]);
@@ -93,7 +95,8 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(v.getContext(), "Nothing… yet!", Toast.LENGTH_SHORT).show();
+            bloclyActivity.onClick(v);
         }
-    }
+   }
+
 }
