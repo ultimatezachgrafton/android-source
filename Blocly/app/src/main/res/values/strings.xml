@@ -6,5 +6,9 @@
 <string name="navigation_option_inbox">Inbox!</string>
 <string name="navigation_option_favorites">Favorites!</string>
 <string name="navigation_option_archived">Archived!</string>
+    <string name="menu_share" />
+    <string name="menu_search" />
+    <string name="menu_refresh" />
+    <string name="menu_mark_as_read" />
 
 </resources>
