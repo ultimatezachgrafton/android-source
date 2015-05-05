@@ -143,8 +143,15 @@ public class BloclyActivity extends ActionBarActivity implements NavigationDrawe
         if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-        Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
-        return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.action_share) {
+            Toast.makeText(this, "Searching is fun!", Toast.LENGTH_SHORT).show();
+        } else if (item.getItemId() == R.id.action_search) {
+            Toast.makeText(this, "I love to share!", Toast.LENGTH_SHORT).show();
+        } else if (item.getItemId() == R.id.action_refresh) {
+            Toast.makeText(this, "Refresh it up!", Toast.LENGTH_SHORT).show();
+        } else if (item.getItemId() == R.id.action_mark_as_read) {
+            Toast.makeText(this, "Mark em all!", Toast.LENGTH_SHORT).show();
+        } return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -160,14 +167,12 @@ public class BloclyActivity extends ActionBarActivity implements NavigationDrawe
 
     @Override
     public void didSelectNavigationOption(NavigationDrawerAdapter adapter, NavigationDrawerAdapter.NavigationOption navigationOption) {
-// #3a
         drawerLayout.closeDrawers();
         Toast.makeText(this, "Show the " + navigationOption.name(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void didSelectFeed(NavigationDrawerAdapter adapter, RssFeed rssFeed) {
-// #3b
         drawerLayout.closeDrawers();
         Toast.makeText(this, "Show RSS items from " + rssFeed.getTitle(), Toast.LENGTH_SHORT).show();
     }
