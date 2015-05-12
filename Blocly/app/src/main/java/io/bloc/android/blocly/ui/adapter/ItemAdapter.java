@@ -137,54 +137,54 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemAdapterVie
             Log.v(TAG, "Checked changed to: " + isChecked);
         }
 
-    private void animateContent(final boolean expand) {
-        if ((expand && contentExpanded) || (!expand && !contentExpanded)) {
-            return;
-        }
-        int startingHeight = expandedContentWrapper.getMeasuredHeight();
-        int finalHeight = content.getMeasuredHeight();
-        if (expand) {
-            startingHeight = finalHeight;
-            expandedContentWrapper.setAlpha(0f);
-            expandedContentWrapper.setVisibility(View.VISIBLE);
-            expandedContentWrapper.measure(
-                    View.MeasureSpec.makeMeasureSpec(content.getWidth(), View.MeasureSpec.EXACTLY),
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-            );
-            finalHeight = expandedContentWrapper.getMeasuredHeight();
-        } else {
-            content.setVisibility(View.VISIBLE);
-        }
-        startAnimator(startingHeight, finalHeight, new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                float animatedFraction = valueAnimator.getAnimatedFraction();
-                float wrapperAlpha = expand ? animatedFraction : 1f - animatedFraction;
-                float contentAlpha = 1f - wrapperAlpha;
-                expandedContentWrapper.setAlpha(wrapperAlpha);
-                content.setAlpha(contentAlpha);
-                expandedContentWrapper.getLayoutParams().height = animatedFraction == 1f ?
-                        ViewGroup.LayoutParams.WRAP_CONTENT :
-                        (Integer) valueAnimator.getAnimatedValue();
-                expandedContentWrapper.requestLayout();
-                if (animatedFraction == 1f) {
-                    if (expand) {
-                        content.setVisibility(View.GONE);
-                    } else {
-                        expandedContentWrapper.setVisibility(View.GONE);
+        private void animateContent(final boolean expand) {
+            if ((expand && contentExpanded) || (!expand && !contentExpanded)) {
+                return;
+            }
+            int startingHeight = expandedContentWrapper.getMeasuredHeight();
+            int finalHeight = content.getMeasuredHeight();
+            if (expand) {
+                startingHeight = finalHeight;
+                expandedContentWrapper.setAlpha(0f);
+                expandedContentWrapper.setVisibility(View.VISIBLE);
+                expandedContentWrapper.measure(
+                        View.MeasureSpec.makeMeasureSpec(content.getWidth(), View.MeasureSpec.EXACTLY),
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                );
+                finalHeight = expandedContentWrapper.getMeasuredHeight();
+            } else {
+                content.setVisibility(View.VISIBLE);
+            }
+            startAnimator(startingHeight, finalHeight, new ValueAnimator.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                    float animatedFraction = valueAnimator.getAnimatedFraction();
+                    float wrapperAlpha = expand ? animatedFraction : 1f - animatedFraction;
+                    float contentAlpha = 1f - wrapperAlpha;
+                    expandedContentWrapper.setAlpha(wrapperAlpha);
+                    content.setAlpha(contentAlpha);
+                    expandedContentWrapper.getLayoutParams().height = animatedFraction == 1f ?
+                            ViewGroup.LayoutParams.WRAP_CONTENT :
+                            (Integer) valueAnimator.getAnimatedValue();
+                    expandedContentWrapper.requestLayout();
+                    if (animatedFraction == 1f) {
+                        if (expand) {
+                            content.setVisibility(View.GONE);
+                        } else {
+                            expandedContentWrapper.setVisibility(View.GONE);
+                        }
                     }
                 }
-            }
-        });
-        contentExpanded = expand;
-    }
+            });
+            contentExpanded = expand;
+        }
 
-   private void startAnimator(int start, int end, ValueAnimator.AnimatorUpdateListener animatorUpdateListener) {
-        ValueAnimator valueAnimator = ValueAnimator.ofInt(start, end);
-        valueAnimator.addUpdateListener(animatorUpdateListener);
-        valueAnimator.setDuration(itemView.getResources().getInteger(android.R.integer.config_mediumAnimTime));
-        valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
-        valueAnimator.start();
-   }
- }
+        private void startAnimator(int start, int end, ValueAnimator.AnimatorUpdateListener animatorUpdateListener) {
+            ValueAnimator valueAnimator = ValueAnimator.ofInt(start, end);
+            valueAnimator.addUpdateListener(animatorUpdateListener);
+            valueAnimator.setDuration(itemView.getResources().getInteger(android.R.integer.config_mediumAnimTime));
+            valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
+            valueAnimator.start();
+        }
+    }
 }
