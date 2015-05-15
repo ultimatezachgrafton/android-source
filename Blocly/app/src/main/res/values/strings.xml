@@ -10,5 +10,6 @@
     <string name="menu_search" />
     <string name="menu_refresh" />
     <string name="menu_mark_as_read" />
+    <string name="share_chooser_title">Share with...</string>
 
 </resources>
