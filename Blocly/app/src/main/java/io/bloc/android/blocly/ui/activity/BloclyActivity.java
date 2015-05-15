@@ -1,5 +1,6 @@
 package io.bloc.android.blocly.ui.activity;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -41,11 +42,13 @@ public class BloclyActivity extends ActionBarActivity
     private NavigationDrawerAdapter navigationDrawerAdapter;
     private Menu menu;
     private View overflowButton;
+    private MenuItem share;
+    private String shareText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_blocly);
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.tb_activity_blocly);
         setSupportActionBar(toolbar);
@@ -153,6 +156,13 @@ public class BloclyActivity extends ActionBarActivity
         if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
+        if (item.getItemId() == R.id.action_share) {
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, shareText);
+            sendIntent.setType("text/plain");
+            startActivity(sendIntent);
+        }
         Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
         return super.onOptionsItemSelected(item);
     }
@@ -161,6 +171,7 @@ public class BloclyActivity extends ActionBarActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.blocly, menu);
         this.menu = menu;
+        setContentView(R.layout.activity_blocly);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -209,6 +220,8 @@ public class BloclyActivity extends ActionBarActivity
     public void onItemClicked(ItemAdapter itemAdapter, RssItem rssItem) {
         int positionToExpand = -1;
         int positionToContract = -1;
+        shareText = rssItem.getTitle();
+
         // #3
         if (itemAdapter.getExpandedItem() != null) {
             positionToContract = BloclyApplication.getSharedDataSource().getItems().indexOf(itemAdapter.getExpandedItem());
