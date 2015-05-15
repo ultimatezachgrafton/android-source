@@ -42,7 +42,7 @@ public class BloclyActivity extends ActionBarActivity
     private NavigationDrawerAdapter navigationDrawerAdapter;
     private Menu menu;
     private View overflowButton;
-    private MenuItem share;
+    private MenuItem shareItem;
     private String shareText;
 
     @Override
@@ -171,7 +171,8 @@ public class BloclyActivity extends ActionBarActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.blocly, menu);
         this.menu = menu;
-        setContentView(R.layout.activity_blocly);
+        shareItem = menu.findItem(R.id.action_share);
+            shareItem.setVisible(false);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -234,8 +235,14 @@ public class BloclyActivity extends ActionBarActivity
         if (itemAdapter.getExpandedItem() != rssItem) {
             positionToExpand = BloclyApplication.getSharedDataSource().getItems().indexOf(rssItem);
             itemAdapter.setExpandedItem(rssItem);
+            shareItem = menu.findItem(R.id.action_share);
+            shareItem.setEnabled(true);
+            shareItem.setVisible(true);
         } else {
             itemAdapter.setExpandedItem(null);
+            shareItem = menu.findItem(R.id.action_share);
+            shareItem.setEnabled(false);
+            shareItem.setVisible(false);
         }
         if (positionToContract > -1) {
             // #5a
