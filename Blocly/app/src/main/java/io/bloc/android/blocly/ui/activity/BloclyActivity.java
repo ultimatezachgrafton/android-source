@@ -1,5 +1,6 @@
 package io.bloc.android.blocly.ui.activity;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -41,6 +42,9 @@ public class BloclyActivity extends ActionBarActivity
     private NavigationDrawerAdapter navigationDrawerAdapter;
     private Menu menu;
     private View overflowButton;
+    private MenuItem share;
+    private String shareText;
+    private MenuItem shareItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,6 +157,17 @@ public class BloclyActivity extends ActionBarActivity
         if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
+
+        if (item.getItemId() == R.id.action_share){
+
+            Intent sendIntent = new Intent();
+            sendIntent.setAction(Intent.ACTION_SEND);
+            sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send.");
+            sendIntent.setType("text/plain");
+            startActivity(sendIntent);
+
+        }
+
         Toast.makeText(this, item.getTitle(), Toast.LENGTH_SHORT).show();
         return super.onOptionsItemSelected(item);
     }
@@ -161,6 +176,7 @@ public class BloclyActivity extends ActionBarActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.blocly, menu);
         this.menu = menu;
+        shareItem = menu.findItem(R.id.action_share);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -210,6 +226,9 @@ public class BloclyActivity extends ActionBarActivity
         int positionToExpand = -1;
         int positionToContract = -1;
         // #3
+
+        shareText = rssItem.getTitle();
+
         if (itemAdapter.getExpandedItem() != null) {
             positionToContract = BloclyApplication.getSharedDataSource().getItems().indexOf(itemAdapter.getExpandedItem());
         }
@@ -221,8 +240,10 @@ public class BloclyActivity extends ActionBarActivity
         if (itemAdapter.getExpandedItem() != rssItem) {
             positionToExpand = BloclyApplication.getSharedDataSource().getItems().indexOf(rssItem);
             itemAdapter.setExpandedItem(rssItem);
+            shareItem.setVisible(true);
         } else {
             itemAdapter.setExpandedItem(null);
+            shareItem.setVisible(false);
         }
         if (positionToContract > -1) {
             // #5a
