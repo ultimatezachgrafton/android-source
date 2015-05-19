@@ -2,6 +2,8 @@ package io.bloc.android.blocly.ui.activity;
 
 import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -13,6 +15,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,6 +23,7 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.bloc.android.blocly.BloclyApplication;
 import io.bloc.android.blocly.R;
@@ -146,6 +150,10 @@ public class BloclyActivity extends ActionBarActivity
         navigationRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         navigationRecyclerView.setItemAnimator(new DefaultItemAnimator());
         navigationRecyclerView.setAdapter(navigationDrawerAdapter);
+
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        List<ResolveInfo> activityList = getPackageManager().queryIntentActivities(intent, PackageManager.GET_INTENT_FILTERS);
+        Log.d("Blocly Activity", activityList.toString());
     }
 
     @Override
