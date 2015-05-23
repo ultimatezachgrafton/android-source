@@ -2,7 +2,6 @@ package io.bloc.android.blocly.ui.activity;
 
 import android.animation.ValueAnimator;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
@@ -151,9 +150,19 @@ public class BloclyActivity extends ActionBarActivity
         navigationRecyclerView.setItemAnimator(new DefaultItemAnimator());
         navigationRecyclerView.setAdapter(navigationDrawerAdapter);
 
-        Intent intent = new Intent(Intent.ACTION_SENDTO);
-        List<ResolveInfo> activityList = getPackageManager().queryIntentActivities(intent, PackageManager.GET_INTENT_FILTERS);
-        Log.d("Blocly Activity", activityList.toString());
+        Intent mailIntent = new Intent(Intent.ACTION_SEND);
+        mailIntent.setType("text/plain");
+        List<ResolveInfo> mailActivityList = getPackageManager().queryIntentActivities(mailIntent, 0);
+        Log.d("Blocly Activity", mailActivityList.toString());
+
+        Intent phoneIntent = new Intent(Intent.ACTION_DIAL);
+        List<ResolveInfo> phoneActivityList = getPackageManager().queryIntentActivities(phoneIntent, 0);
+        Log.d("Blocly Activity", phoneActivityList.toString());
+
+        Intent webIntent = new Intent(Intent.ACTION_VIEW);
+        List<ResolveInfo> webActivityList = getPackageManager().queryIntentActivities(webIntent, 0);
+        Log.d("Blocly Activity", webActivityList.toString());
+
     }
 
     @Override
