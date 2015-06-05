@@ -15,10 +15,13 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import io.bloc.android.blocly.api.model.RssFeed;
+import io.bloc.android.blocly.api.model.RssItem;
+
 /**
  * Created by Zach on 6/3/2015.
  */
-public class GetFeedsNetworkRequest extends NetworkRequest<List<GetFeedsNetworkRequest.FeedResponse>> {
+public class GetFeedsNetworkRequest extends NetworkRequest<ArrayList<RssFeed>> {
 
     public static final int ERROR_PARSING = 3;
 
@@ -31,6 +34,9 @@ public class GetFeedsNetworkRequest extends NetworkRequest<List<GetFeedsNetworkR
     private static final String XML_TAG_ENCLOSURE = "enclosure";
     private static final String XML_ATTRIBUTE_URL = "url";
     private static final String XML_ATTRIBUTE_TYPE = "type";
+    public static ArrayList<RssFeed> responseFeeds;
+    public static ArrayList<RssItem> responseItems;
+
 
     String [] feedUrls;
 
@@ -38,9 +44,10 @@ public class GetFeedsNetworkRequest extends NetworkRequest<List<GetFeedsNetworkR
         this.feedUrls = feedUrls;
     }
 
+
     @Override
-    public List<FeedResponse> performRequest() {
-        List<FeedResponse> responseFeeds = new ArrayList<FeedResponse>(feedUrls.length);
+    public ArrayList<RssFeed> performRequest() {
+        responseFeeds = new ArrayList<RssFeed>(feedUrls.length);
         for (String feedUrlString : feedUrls) {
             InputStream inputStream = openStream(feedUrlString);
             if (inputStream == null) {
@@ -55,8 +62,9 @@ public class GetFeedsNetworkRequest extends NetworkRequest<List<GetFeedsNetworkR
                 String channelDescription = optFirstTagFromDocument(xmlDocument, XML_TAG_DESCRIPTION);
                 String channelURL = optFirstTagFromDocument(xmlDocument, XML_TAG_LINK);
 
+
                 NodeList allItemNodes = xmlDocument.getElementsByTagName(XML_TAG_ITEM);
-                List<ItemResponse> responseItems = new ArrayList<ItemResponse>(allItemNodes.getLength());
+                responseItems = new ArrayList<RssItem>(allItemNodes.getLength());
                 for (int itemIndex = 0; itemIndex < allItemNodes.getLength(); itemIndex++) {
 
                     String itemURL = null;
@@ -66,6 +74,7 @@ public class GetFeedsNetworkRequest extends NetworkRequest<List<GetFeedsNetworkR
                     String itemPubDate = null;
                     String itemEnclosureURL = null;
                     String itemEnclosureMIMEType = null;
+
 
                     Node itemNode = allItemNodes.item(itemIndex);
                     NodeList tagNodes = itemNode.getChildNodes();
@@ -90,13 +99,13 @@ public class GetFeedsNetworkRequest extends NetworkRequest<List<GetFeedsNetworkR
                             itemGUID = tagNode.getTextContent();
                         }
                     }
-
-                    responseItems.add(new ItemResponse(itemURL, itemTitle, itemDescription,
-                            itemGUID, itemPubDate, itemEnclosureURL, itemEnclosureMIMEType));
+                    RssItem rssItem = new RssItem(itemGUID, itemTitle, itemDescription, itemURL, "", 0, 0, false, false);
+                    responseItems.add(rssItem);
                 }
-                responseFeeds.add(new FeedResponse(feedUrlString, channelTitle, channelURL, channelDescription, responseItems));
-                inputStream.close();
+                RssFeed rssFeed = new RssFeed(channelTitle,channelDescription,channelURL,"");
+                responseFeeds.add(rssFeed);
 
+                inputStream.close();
             } catch (IOException e) {
                 e.printStackTrace();
                 setErrorCode(ERROR_IO);
@@ -113,7 +122,6 @@ public class GetFeedsNetworkRequest extends NetworkRequest<List<GetFeedsNetworkR
         }
         return responseFeeds;
     }
-
     private String optFirstTagFromDocument(Document document, String tagName) {
         NodeList elementsByTagName = document.getElementsByTagName(tagName);
         if (elementsByTagName.getLength() > 0) {
