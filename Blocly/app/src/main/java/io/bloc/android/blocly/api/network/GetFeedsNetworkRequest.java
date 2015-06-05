@@ -31,11 +31,15 @@ public class GetFeedsNetworkRequest extends NetworkRequest {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
                 String line = bufferedReader.readLine();
+                //make an int countervariable
                 while (line != null) {
+                    // if you find <item> substring of line string, then increase counter
+                    if <item>; counter +=
+
                     Log.v(getClass().getSimpleName(), "Line: " + line);
                     line = bufferedReader.readLine();
                 }
-
+                //Log the counter variable
                 bufferedReader.close();
             } catch (IOException e) {
                 e.printStackTrace();
