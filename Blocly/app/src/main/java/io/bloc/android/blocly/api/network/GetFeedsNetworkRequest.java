@@ -38,15 +38,15 @@ public class GetFeedsNetworkRequest extends NetworkRequest {
                 while (line != null) {
 
                     // if you find <item> substring of line string, then increase counter
-                    if (line.indexOf("") > 0) {
+                    if (line.indexOf("Line: ") > 0) {
                         counterVariable++;
                     }
 
-
+                    //Log the counter variable
                     line = bufferedReader.readLine();
                     Log.v(getClass().getSimpleName(), "Line: " + counterVariable);
 
-                    //Log the counter variable
+
 
                 }
 
