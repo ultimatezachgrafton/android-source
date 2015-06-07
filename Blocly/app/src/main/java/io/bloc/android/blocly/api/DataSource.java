@@ -1,5 +1,7 @@
 package io.bloc.android.blocly.api;
 
+import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
@@ -14,6 +16,7 @@ import io.bloc.android.blocly.api.model.database.DatabaseOpenHelper;
 import io.bloc.android.blocly.api.model.database.table.RssFeedTable;
 import io.bloc.android.blocly.api.model.database.table.RssItemTable;
 import io.bloc.android.blocly.api.network.GetFeedsNetworkRequest;
+
 
 /**
  * Created by Zach on 3/25/2015.
@@ -39,13 +42,27 @@ public class DataSource {
         new Thread(new Runnable() {
             @Override
             public void run() {
-
                 if (BuildConfig.DEBUG && false) {
                     BloclyApplication.getSharedInstance().deleteDatabase("blocly_db");
                 }
 
+                List<GetFeedsNetworkRequest.FeedResponse> feedResponse = new GetFeedsNetworkRequest("http://feeds.feedburner.com/androidcentral?format=xml").performRequest();
+                GetFeedsNetworkRequest.FeedResponse androidCentral = feedResponse.get(0);
                 SQLiteDatabase writableDatabase = databaseOpenHelper.getWritableDatabase();
-                new GetFeedsNetworkRequest("http://feeds.feedburner.com/androidcentral?format=xml").performRequest();
+                SQLiteDatabase readableDatabase = databaseOpenHelper.getReadableDatabase();
+                for (GetFeedsNetworkRequest.ItemResponse itemResponse : androidCentral.channelItems) {
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put("guid", itemResponse.itemGUID);
+                    contentValues.put("title", itemResponse.itemTitle);
+                    contentValues.put("link", itemResponse.itemURL);
+                    contentValues.put("description", itemResponse.itemDescription);
+                    Cursor cursor = readableDatabase.rawQuery("SELECT COUNT (GUID) FROM "  + rssItemTable.getName() +" WHERE GUID = "
+                            + itemResponse.itemGUID, null);
+                    if (cursor.getCount()==0) {
+                        writableDatabase.insert(rssItemTable.getName(), null, contentValues);
+                        writableDatabase.close();
+                    } else writableDatabase.close();
+                }
             }
         }).start();
     }
