@@ -56,8 +56,10 @@ public class DataSource {
                     contentValues.put("title", itemResponse.itemTitle);
                     contentValues.put("link", itemResponse.itemURL);
                     contentValues.put("description", itemResponse.itemDescription);
-                    Cursor cursor = readableDatabase.rawQuery("SELECT COUNT (GUID) FROM "  + rssItemTable.getName() +" WHERE GUID = "
-                            + itemResponse.itemGUID, null);
+
+                    Cursor cursor = readableDatabase.rawQuery("SELECT COUNT (GUID) FROM " + rssItemTable.getName() +" WHERE GUID = '"
+                            + itemResponse.itemGUID + "'", null);
+
                     if (cursor.getCount()==0) {
                         writableDatabase.insert(rssItemTable.getName(), null, contentValues);
                         writableDatabase.close();
