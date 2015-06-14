@@ -38,7 +38,7 @@ public class GetFeedsNetworkRequest extends NetworkRequest {
                 while (line != null) {
 
                     // if you find <item> substring of line string, then increase counter
-                    if(line.indexOf("") > 0) {
+                    if(line.indexOf("<line>") > 0) {
                         counterVariable++;
                     }
 
