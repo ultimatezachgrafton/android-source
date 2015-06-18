@@ -4,6 +4,9 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import io.bloc.android.blocly.BloclyApplication;
+import io.bloc.android.blocly.api.model.database.DatabaseOpenHelper;
+
 /**
  * Created by Zach on 6/4/2015.
  */
@@ -95,7 +98,6 @@ public class RssItemTable extends Table {
         return getBoolean(cursor, COLUMN_ARCHIVED);
     }
 
-
     private static final String NAME = "rss_items";
 
     private static final String COLUMN_LINK = "link";
@@ -113,6 +115,35 @@ public class RssItemTable extends Table {
     public String getName() {
         return "rss_items";
     }
+
+    public Cursor fetchRow(SQLiteDatabase readOnlyDatabase, long rowId, Boolean isArchived, Boolean isFavorite,
+                                                      int offset, int limit) {
+                StringBuilder sqlStatement = new StringBuilder();
+                sqlStatement.append("SELECT * FROM " + COLUMN_RSS_FEED + " WHERE rowID = " + rowId);
+                if (isArchived != null) {
+                        sqlStatement.append(" AND " + COLUMN_ARCHIVED + " = " + isArchived);
+                    }
+                if (isFavorite != null) {
+                        sqlStatement.append(" AND " + COLUMN_FAVORITE + " = " + isFavorite);
+                    }
+                sqlStatement.append(" OFFSET " + offset + " LIMIT " + limit);
+                sqlStatement.append(";");
+                return readOnlyDatabase.rawQuery(sqlStatement.toString(), new String[0]);
+            }
+
+    DatabaseOpenHelper db = new DatabaseOpenHelper(BloclyApplication.getSharedInstance());
+    SQLiteDatabase readableDatabase = db.getReadableDatabase();
+    RssItemTable rssItemTable = new RssItemTable();
+    long feedId = new RssFeedTable.Builder().setTitle("cool feed").insert(readableDatabase);
+
+    Cursor findArchived = rssItemTable.fetchRow(readableDatabase, 0 ,true,null,0,0);
+    Cursor findArchivedInFeed = rssItemTable.fetchRow(readableDatabase,feedId,true,null,0,0);
+    Cursor findFavorited = rssItemTable.fetchRow(readableDatabase,0,null,true,0,0);
+    Cursor findFavoritedInFeed = rssItemTable.fetchRow(readableDatabase,feedId,null,true,0,0);
+
+    Cursor allFromFeed = rssItemTable.fetchRow(readableDatabase,feedId,null,null,0,0);
+
+    Cursor allFromFeedWithOffsetAndLimit = rssItemTable.fetchRow(readableDatabase,feedId,null,null,10,20);
 
     @Override
     public String getCreateStatement() {
