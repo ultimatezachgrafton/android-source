@@ -62,9 +62,9 @@ public class DataSource {
 
                     if (cursor.getCount()==0) {
                         writableDatabase.insert(rssItemTable.getName(), null, contentValues);
-                        writableDatabase.close();
-                    } else writableDatabase.close();
+                    }
                 }
+                writableDatabase.close();
             }
         }).start();
     }
