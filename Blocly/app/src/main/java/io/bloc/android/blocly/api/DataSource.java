@@ -1,7 +1,7 @@
 package io.bloc.android.blocly.api;
 
-import android.content.Intent;
 import android.database.Cursor;
+import android.os.Handler;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -95,6 +95,7 @@ public class DataSource {
                     });
                     return;
                 }
+
                 GetFeedsNetworkRequest.FeedResponse newFeedResponse = feedResponses.get(0);
                 long newFeedId = new RssFeedTable.Builder()
                         .setFeedURL(newFeedResponse.channelFeedURL)
@@ -136,12 +137,14 @@ public class DataSource {
                     });
                 }
             }
+        });
+    }
 
             static RssFeed feedFromCursor(Cursor cursor) {
-                return new RssFeed(Table.getRowId(cursor), RssFeedTable.getTitle(cursor),
-                        RssFeedTable.getDescription(cursor), RssFeedTable.getSiteURL(cursor),
-                        RssFeedTable.getFeedURL(cursor));
+                return new RssFeed(Table.getRowId(cursor), RssFeedTable.getTitle(cursor), RssFeedTable.getDescription(cursor),
+                        RssFeedTable.getSiteURL(cursor), RssFeedTable.getFeedURL(cursor));
             }
+
 
             // #4b
             static RssItem itemFromCursor(Cursor cursor) {
@@ -185,6 +188,5 @@ public class DataSource {
                     }
                 });
             }
-        });
+
     }
-}
