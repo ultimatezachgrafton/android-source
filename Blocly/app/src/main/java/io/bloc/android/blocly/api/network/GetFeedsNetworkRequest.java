@@ -20,7 +20,7 @@ import javax.xml.parsers.ParserConfigurationException;
 /**
  * Created by Zach on 6/3/2015.
  */
-public class GetFeedsNetworkRequest extends NetworkRequest<List<GetFeedsNetworkRequest.FeedResponse>> {
+public class GetFeedsNetworkRequest extends NetworkRequest<List<GetFeedsNetworkRequest.FeedResponse>>{
 
     public static final int ERROR_PARSING = 3;
 
@@ -30,20 +30,22 @@ public class GetFeedsNetworkRequest extends NetworkRequest<List<GetFeedsNetworkR
     private static final String XML_TAG_ITEM = "item";
     private static final String XML_TAG_PUB_DATE = "pubDate";
     private static final String XML_TAG_GUID = "guid";
-    private static final String XML_TAG_ENCLOSURE = "enclosure";
     private static final String XML_TAG_CONTENT_ENCODED = "content:encoded";
     private static final String XML_TAG_MEDIA_CONTENT = "media:content";
+    private static final String XML_TAG_ENCLOSURE = "enclosure";
     private static final String XML_ATTRIBUTE_URL = "url";
     private static final String XML_ATTRIBUTE_TYPE = "type";
 
+    // #7
     String [] feedUrls;
 
     public GetFeedsNetworkRequest(String... feedUrls) {
         this.feedUrls = feedUrls;
     }
 
+    // #8
     @Override
-    public List<FeedResponse> performRequest() {
+    public List<FeedResponse> performRequest()  {
         List<FeedResponse> responseFeeds = new ArrayList<FeedResponse>(feedUrls.length);
         for (String feedUrlString : feedUrls) {
             InputStream inputStream = openStream(feedUrlString);
@@ -52,17 +54,18 @@ public class GetFeedsNetworkRequest extends NetworkRequest<List<GetFeedsNetworkR
             }
             try {
                 DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-
+// #5
                 Document xmlDocument = documentBuilder.parse(inputStream);
 
                 String channelTitle = optFirstTagFromDocument(xmlDocument, XML_TAG_TITLE);
                 String channelDescription = optFirstTagFromDocument(xmlDocument, XML_TAG_DESCRIPTION);
                 String channelURL = optFirstTagFromDocument(xmlDocument, XML_TAG_LINK);
 
+                // #6
                 NodeList allItemNodes = xmlDocument.getElementsByTagName(XML_TAG_ITEM);
                 List<ItemResponse> responseItems = new ArrayList<ItemResponse>(allItemNodes.getLength());
                 for (int itemIndex = 0; itemIndex < allItemNodes.getLength(); itemIndex++) {
-
+// #7
                     String itemURL = null;
                     String itemTitle = null;
                     String itemImageURL = null;
@@ -74,13 +77,16 @@ public class GetFeedsNetworkRequest extends NetworkRequest<List<GetFeedsNetworkR
                     String itemPubDate = null;
                     String itemEnclosureURL = null;
                     String itemEnclosureMIMEType = null;
+                    String itemYouTubeImage = null;
 
+
+                    //8
                     Node itemNode = allItemNodes.item(itemIndex);
                     NodeList tagNodes = itemNode.getChildNodes();
                     for (int tagIndex = 0; tagIndex < tagNodes.getLength(); tagIndex++) {
                         Node tagNode = tagNodes.item(tagIndex);
                         String tag = tagNode.getNodeName();
-
+// #9
                         if (XML_TAG_LINK.equalsIgnoreCase(tag)) {
                             itemURL = tagNode.getTextContent();
                         } else if (XML_TAG_TITLE.equalsIgnoreCase(tag)) {
@@ -88,10 +94,8 @@ public class GetFeedsNetworkRequest extends NetworkRequest<List<GetFeedsNetworkR
                         } else if (XML_TAG_DESCRIPTION.equalsIgnoreCase(tag)) {
                             String descriptionText = tagNode.getTextContent();
                             itemImageURL = parseImageFromHTML(descriptionText);
-
                             itemDescription = parseTextFromHTML(descriptionText);
                         } else if (XML_TAG_ENCLOSURE.equalsIgnoreCase(tag)) {
-
                             NamedNodeMap enclosureAttributes = tagNode.getAttributes();
                             itemEnclosureURL = enclosureAttributes.getNamedItem(XML_ATTRIBUTE_URL).getTextContent();
                             itemEnclosureMIMEType = enclosureAttributes.getNamedItem(XML_ATTRIBUTE_TYPE).getTextContent();
@@ -101,9 +105,10 @@ public class GetFeedsNetworkRequest extends NetworkRequest<List<GetFeedsNetworkR
                             itemGUID = tagNode.getTextContent();
                         } else if (XML_TAG_CONTENT_ENCODED.equalsIgnoreCase(tag)) {
                             String contentEncoded = tagNode.getTextContent();
+                            itemYouTubeImage = parseThumbnail(contentEncoded);
                             itemImageURL = parseImageFromHTML(contentEncoded);
                             itemContentEncodedText = parseTextFromHTML(contentEncoded);
-                            // #8
+
                         } else if (XML_TAG_MEDIA_CONTENT.equalsIgnoreCase(tag)) {
                             NamedNodeMap mediaAttributes = tagNode.getAttributes();
                             itemMediaURL = mediaAttributes.getNamedItem(XML_ATTRIBUTE_URL).getTextContent();
@@ -117,16 +122,15 @@ public class GetFeedsNetworkRequest extends NetworkRequest<List<GetFeedsNetworkR
                         itemEnclosureURL = itemMediaURL;
                         itemEnclosureMIMEType = itemMediaMIMEType;
                     }
-                    // #10
-                    if (itemContentEncodedText != null) {
+                    if (itemContentEncodedText != null){
                         itemDescription = itemContentEncodedText;
                     }
+
                     responseItems.add(new ItemResponse(itemURL, itemTitle, itemDescription,
                             itemGUID, itemPubDate, itemEnclosureURL, itemEnclosureMIMEType));
                 }
                 responseFeeds.add(new FeedResponse(feedUrlString, channelTitle, channelURL, channelDescription, responseItems));
                 inputStream.close();
-
             } catch (IOException e) {
                 e.printStackTrace();
                 setErrorCode(ERROR_IO);
@@ -143,7 +147,6 @@ public class GetFeedsNetworkRequest extends NetworkRequest<List<GetFeedsNetworkR
         }
         return responseFeeds;
     }
-
     private String optFirstTagFromDocument(Document document, String tagName) {
         NodeList elementsByTagName = document.getElementsByTagName(tagName);
         if (elementsByTagName.getLength() > 0) {
@@ -156,7 +159,6 @@ public class GetFeedsNetworkRequest extends NetworkRequest<List<GetFeedsNetworkR
         org.jsoup.nodes.Document document = Jsoup.parse(htmlString);
         return document.body().text();
     }
-
     static String parseImageFromHTML(String htmlString) {
         org.jsoup.nodes.Document document = Jsoup.parse(htmlString);
         Elements imgElements = document.select("img");
@@ -164,6 +166,18 @@ public class GetFeedsNetworkRequest extends NetworkRequest<List<GetFeedsNetworkR
             return null;
         }
         return imgElements.attr("src");
+    }
+    //checkpoint 57
+
+    static String parseThumbnail(String youTubeURL){
+        org.jsoup.nodes.Document document = Jsoup.parse(youTubeURL);
+        Elements youtubeElements = document.select("FXx_gbdIUKg");
+        org.jsoup.nodes.Document iframeDoc = Jsoup.parse(youtubeElements.get(0).data());
+        Elements iframeElements = iframeDoc.select("iframe");
+        if (iframeElements.isEmpty()){
+            return null;
+        }
+        return iframeElements.attr("http://img.youtube.com/vi/"+youtubeElements+"/default.jpg");
     }
 
     public static class FeedResponse {
@@ -183,6 +197,7 @@ public class GetFeedsNetworkRequest extends NetworkRequest<List<GetFeedsNetworkR
         }
     }
 
+    // #4
     public static class ItemResponse {
         public final String itemURL;
         public final String itemTitle;

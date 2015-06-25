@@ -26,4 +26,5 @@ dependencies {
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
     compile 'com.android.support:appcompat-v7:21.0.0'
     compile files('libs/jsoup-1.8.1.jar')
+    compile files('libs/google-api-services-youtube-v3-rev137-1.20.0.jar')
 }
