@@ -13,7 +13,8 @@ import io.bloc.android.blocly.api.DataSource;
 /**
  * Created by Zach on 3/25/2015.
  */
-public class BloclyApplication extends Application {
+public class
+        BloclyApplication extends Application {
 
 
     public static BloclyApplication getSharedInstance() {

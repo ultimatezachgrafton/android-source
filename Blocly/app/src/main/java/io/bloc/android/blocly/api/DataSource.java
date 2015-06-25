@@ -118,6 +118,50 @@ public class DataSource {
         });
     }
 
+//    public static Cursor fetchItemsForFeed(SQLiteDatabase readonlyDatabase, long feedRowId) {
+//        RssItemTable newItems = new RssItemTable();
+//        return readonlyDatabase.query(true, newItems.getName(), null, newItems. + " = ?",
+//                new String[]{String.valueOf(feedRowId)},
+//                null, null, COLUMN_PUB_DATE + " DESC", null);
+//    }
+//    public void fetchNewItem(final String feedURL, Callback<RssFeed> callback){
+//        fetchNewFeed(feedURL, callback = new Callback<RssFeed>() {
+//            @Override
+//            public void onSuccess(RssFeed rssFeed) {
+//                GetFeedsNetworkRequest getFeedsNetworkRequest = new GetFeedsNetworkRequest(feedURL);
+//                List<GetFeedsNetworkRequest.FeedResponse> feedResponses = getFeedsNetworkRequest.performRequest();
+//                //loop throuh feed responses
+//                for (GetFeedsNetworkRequest.FeedResponse feed : feedResponses) {
+//
+//                    //loop through channel items in each feed
+//                    for (GetFeedsNetworkRequest.ItemResponse itemResponse : feed.channelItems) {
+//
+//                        long itemPubDate = System.currentTimeMillis();
+//                        DateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy kk:mm:ss z", Locale.ENGLISH);
+//                        try {
+//                            itemPubDate = dateFormat.parse(itemResponse.itemPubDate).getTime();
+//                        } catch (ParseException e) {
+//                            e.printStackTrace();
+//                        }
+//                        Cursor newItemCursor = RssItemTable.fetchItemsForFeed(databaseOpenHelper.getReadableDatabase(), itemPubDate);
+//                        if (newItemCursor.getCount() == 0) {
+//                            RssItem fetchedItem = itemFromCursor(newItemCursor);
+//                            databaseOpenHelper.getWritableDatabase().insert(fetchedItem.getTitle(), null, contentValues);
+//                            newItemCursor.close();
+//                        }
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onError(String errorMessage) {
+//                Toast.makeText(null, errorMessage, Toast.LENGTH_LONG).show();
+//            }
+//        });
+//    }
+
+
+
     public void fetchNewFeed(final String feedURL, final Callback<RssFeed> callback){
         final Handler callbackThreadHandler = new Handler();
 
@@ -247,8 +291,8 @@ public class DataSource {
                 RssItemTable.getDescription(cursor), RssItemTable.getLink(cursor),
                 RssItemTable.getEnclosure(cursor), RssItemTable.getRssFeedId(cursor),
                 RssItemTable.getPubDate(cursor), false, RssItemTable.getFavorite(cursor));
-                //RssItemTable.getArchived(cursor));
-    }
+        }
+
 
     void submitTask(Runnable task) {
         if (executorService.isShutdown() || executorService.isTerminated()) {
