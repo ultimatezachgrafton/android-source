@@ -49,7 +49,6 @@ public class DataSource {
                 rssFeedTable, rssItemTable);
         if (BuildConfig.DEBUG && true) {
             BloclyApplication.getSharedInstance().deleteDatabase("blocly_db");
-
             SQLiteDatabase writableDatabase = databaseOpenHelper.getWritableDatabase();
             new RssFeedTable.Builder()
                     .setTitle("AndroidCentral")
@@ -70,72 +69,6 @@ public class DataSource {
                     .setFeedURL("http://feeds.gawker.com/kotaku/full#_ga=1.41426146.1734638996.1420673722")
                     .insert(writableDatabase);
         }
-    }
-
-    long insertResponseToFeed(String feedURL, GetFeedsNetworkRequest.ItemResponse itemResponse) {
-        long itemPubDate = System.currentTimeMillis();
-        DateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy kk:mm:ss z", Locale.ENGLISH);
-        try {
-            itemPubDate = dateFormat.parse(itemResponse.itemPubDate).getTime();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return new RssItemTable.Builder()
-                .setTitle(itemResponse.itemTitle)
-                .setDescription(itemResponse.itemDescription)
-                .setEnclosure(itemResponse.itemEnclosureURL)
-                .setMIMEType(itemResponse.itemEnclosureMIMEType)
-                .setLink(itemResponse.itemURL)
-                .setGUID(itemResponse.itemGUID)
-                .setPubDate(itemPubDate)
-                .insert(databaseOpenHelper.getWritableDatabase());
-    }
-
-    public void fetchNewItem(final String feedURL, final Callback callback){
-        final Handler callbackThreadHandler = new Handler();
-        submitTask(new Runnable(){
-            @Override
-            public void run(){
-                GetFeedsNetworkRequest getFeedsNetworkRequest = new GetFeedsNetworkRequest(feedURL);
-                final List<RssItem> newItems = new ArrayList<RssItem>();
-                List<GetFeedsNetworkRequest.FeedResponse> feedResponses = getFeedsNetworkRequest.performRequest();
-                if (getFeedsNetworkRequest.getErrorCode() != 0) {
-                    final String errorMessage;
-                    if (getFeedsNetworkRequest.getErrorCode() == NetworkRequest.ERROR_IO) {
-                        errorMessage = "Network error";
-                    } else if (getFeedsNetworkRequest.getErrorCode() == NetworkRequest.ERROR_MALFORMED_URL) {
-                        errorMessage = "Malformed URL error";
-                    } else if (getFeedsNetworkRequest.getErrorCode() == GetFeedsNetworkRequest.ERROR_PARSING) {
-                        errorMessage = "Error parsing feed";
-                    } else {
-                        errorMessage = "Error unknown";
-                    }
-                    callbackThreadHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            callback.onError(errorMessage);
-                        }
-                    });
-                    return;
-                }
-                GetFeedsNetworkRequest.FeedResponse feedResponse = feedResponses.get(0);
-                for (GetFeedsNetworkRequest.ItemResponse itemResponse : feedResponse.channelItems){
-                    long newItemRowId = insertResponseToFeed(feedURL, itemResponse);
-                    Cursor newItemCursor = RssItemTable.fetchItemsForFeed(databaseOpenHelper.getReadableDatabase(), newItemRowId);
-                    if (newItemCursor.getCount() != 0) {
-                        newItemCursor.moveToNext();
-                        newItems.add(itemFromCursor(newItemCursor));
-                        newItemCursor.close();
-                    }
-                    callbackThreadHandler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            callback.onSuccess(newItems);
-                        }
-                    });
-                }
-            }
-        });
     }
 
     public void fetchFeedWithId(final long rowId, final Callback<RssFeed> callback) {
@@ -187,7 +120,6 @@ public class DataSource {
             }
         });
     }
-
     public void fetchNewItemsForFeed(final RssFeed rssFeed, final Callback<List<RssItem>> callback) {
         final Handler callbackThreadHandler = new Handler();
         submitTask(new Runnable() {
@@ -257,7 +189,8 @@ public class DataSource {
                         .setDescription(newFeedResponse.channelDescription)
                         .insert(databaseOpenHelper.getWritableDatabase());
 
-                insertResponseToDatabase(newFeedId, itemResponse);
+                for (GetFeedsNetworkRequest.ItemResponse itemResponse : newFeedResponse.channelItems) {
+                    insertResponseToDatabase(newFeedId, itemResponse);
                 }
 
                 Cursor newFeedCursor = rssFeedTable.fetchRow(databaseOpenHelper.getReadableDatabase(), newFeedId);
@@ -273,9 +206,7 @@ public class DataSource {
             }
         });
     }
-
     public void fetchItemsForFeed(final RssFeed rssFeed, final Callback<List<RssItem>> callback) {
-
         final Handler callbackThreadHandler = new Handler();
         submitTask(new Runnable() {
             @Override
@@ -300,7 +231,6 @@ public class DataSource {
             }
         });
     }
-
     // #4a
 
     static RssFeed feedFromCursor(Cursor cursor) {
@@ -314,7 +244,6 @@ public class DataSource {
                 RssItemTable.getDescription(cursor), RssItemTable.getLink(cursor),
                 RssItemTable.getEnclosure(cursor), RssItemTable.getRssFeedId(cursor),
                 RssItemTable.getPubDate(cursor), false, RssItemTable.getFavorite(cursor));
-                //RssItemTable.getArchived(cursor));
     }
 
     void submitTask(Runnable task) {
@@ -323,6 +252,7 @@ public class DataSource {
         }
         executorService.submit(task);
     }
+
     boolean checkForError(GetFeedsNetworkRequest getFeedsNetworkRequest, Handler callbackThreadHandler, final Callback<?> callback) {
         if (getFeedsNetworkRequest.getErrorCode() != 0) {
             final String errorMessage;
@@ -344,6 +274,7 @@ public class DataSource {
         }
         return getFeedsNetworkRequest.getErrorCode() != 0;
     }
+
     long insertResponseToDatabase(long feedId, GetFeedsNetworkRequest.ItemResponse itemResponse) {
         long itemPubDate = System.currentTimeMillis();
         DateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy kk:mm:ss z", Locale.ENGLISH);
@@ -363,4 +294,5 @@ public class DataSource {
                 .setRSSFeed(feedId)
                 .insert(databaseOpenHelper.getWritableDatabase());
     }
+
 }

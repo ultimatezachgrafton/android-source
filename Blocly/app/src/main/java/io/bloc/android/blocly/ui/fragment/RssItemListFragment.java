@@ -1,6 +1,7 @@
 package io.bloc.android.blocly.ui.fragment;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -27,6 +28,7 @@ import io.bloc.android.blocly.ui.adapter.ItemAdapter;
  */
 public class RssItemListFragment extends Fragment implements ItemAdapter.DataSource, ItemAdapter.Delegate {
 
+    // #10 - stores and retrieves RSS feed's identifier from the bundle
     private static final String BUNDLE_EXTRA_RSS_FEED = RssItemListFragment.class.getCanonicalName().concat(".EXTRA_RSS_FEED");
 
     // #11
@@ -56,9 +58,10 @@ public class RssItemListFragment extends Fragment implements ItemAdapter.DataSou
     private WeakReference<Delegate> delegate;
 
     @Override
+    //notifies the fragment of its new owner
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        // #6
+        // #6 - assign this activity as our delegate reference
         delegate = new WeakReference<Delegate>((Delegate) activity);
     }
     @Override
@@ -67,22 +70,23 @@ public class RssItemListFragment extends Fragment implements ItemAdapter.DataSou
         itemAdapter = new ItemAdapter();
         itemAdapter.setDataSource(this);
         itemAdapter.setDelegate(this);
-    }
 
-    Bundle arguments = getArguments();
-    if (arguments == null) {
-        return;
-    }
-    long feedRowId = arguments.getLong(BUNDLE_EXTRA_RSS_FEED);
-    BloclyApplication.getSharedDataSource().fetchFeedWithId(feedRowId, new DataSource.Callback<RssFeed>() {
-        @Override
-        public void onSuccess(RssFeed rssFeed) {
-            currentFeed = rssFeed;
+        // #12
+        Bundle arguments = getArguments();
+        if (arguments == null) {
+            return;
         }
+        long feedRowId = arguments.getLong(BUNDLE_EXTRA_RSS_FEED);
+        BloclyApplication.getSharedDataSource().fetchFeedWithId(feedRowId, new DataSource.Callback<RssFeed>() {
+            @Override
+            public void onSuccess(RssFeed rssFeed) {
+                currentFeed = rssFeed;
+            }
 
-        @Override
-        public void onError(String errorMessage) {}
-    });
+            @Override
+            public void onError(String errorMessage) {}
+        });
+    }
 
     @Nullable
     @Override
@@ -128,8 +132,7 @@ public class RssItemListFragment extends Fragment implements ItemAdapter.DataSou
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(itemAdapter);
     }
-
-    /*
+     /*
       * ItemAdapter.DataSource
       */
 

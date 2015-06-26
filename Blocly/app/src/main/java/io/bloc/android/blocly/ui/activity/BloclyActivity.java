@@ -33,9 +33,9 @@ import io.bloc.android.blocly.ui.fragment.RssItemListFragment;
 /**
  * Created by Zach on 3/25/2015.
  */
-public class BloclyActivity extends ActionBarActivity implements
-        NavigationDrawerAdapter.NavigationDrawerAdapterDelegate,
-        NavigationDrawerAdapter.NavigationDrawerAdapterDataSource,
+public class BloclyActivity extends ActionBarActivity
+        implements
+        NavigationDrawerAdapter.NavigationDrawerAdapterDelegate, NavigationDrawerAdapter.NavigationDrawerAdapterDataSource,
         RssItemListFragment.Delegate {
 
     private ActionBarDrawerToggle drawerToggle;
@@ -44,6 +44,7 @@ public class BloclyActivity extends ActionBarActivity implements
     private Menu menu;
     private View overflowButton;
     private List<RssFeed> allFeeds = new ArrayList<RssFeed>();
+    // #12
     private RssItem expandedItem = null;
 
 
@@ -54,16 +55,41 @@ public class BloclyActivity extends ActionBarActivity implements
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.tb_activity_blocly);
         setSupportActionBar(toolbar);
+        navigationDrawerAdapter = new NavigationDrawerAdapter();
+        navigationDrawerAdapter.setDelegate(this);
+        navigationDrawerAdapter.setDataSource(this);
+        RecyclerView navigationRecyclerView = (RecyclerView) findViewById((R.id.rv_nav_activity_blocly));
 
+        navigationRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        navigationRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        navigationRecyclerView.setAdapter(navigationDrawerAdapter);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        BloclyApplication.getSharedDataSource().fetchAllFeeds(new DataSource.Callback<List<RssFeed>>() {
+            @Override
+            public void onSuccess(List<RssFeed> rssFeeds) {
+                allFeeds.addAll(rssFeeds);
+                navigationDrawerAdapter.notifyDataSetChanged();
+                // #14
+                getFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.fl_activity_blocly, RssItemListFragment.fragmentForRssFeed(rssFeeds.get(0)))
+                        .commit();
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+            }
+        });
+
         drawerLayout = (DrawerLayout) findViewById(R.id.dl_activity_blocly);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, 0, 0) {
-
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
                 if (overflowButton != null) {
                     overflowButton.setAlpha(1f);
+// #7c
                     overflowButton.setEnabled(true);
                 }
                 if (menu == null) {
@@ -71,8 +97,7 @@ public class BloclyActivity extends ActionBarActivity implements
                 }
                 for (int i = 0; i < menu.size(); i++) {
                     MenuItem item = menu.getItem(i);
-                    if (item.getItemId() == R.id.action_share
-                            && expandedItem == null) {
+                    if(item.getItemId() == R.id.action_share && expandedItem==null){
                         continue;
                     }
                     item.setEnabled(true);
@@ -87,12 +112,14 @@ public class BloclyActivity extends ActionBarActivity implements
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
                 if (overflowButton != null) {
+// #7a
                     overflowButton.setEnabled(false);
                 }
                 if (menu == null) {
                     return;
                 }
                 for (int i = 0; i < menu.size(); i++) {
+// #7b
                     menu.getItem(i).setEnabled(false);
                 }
             }
@@ -101,7 +128,7 @@ public class BloclyActivity extends ActionBarActivity implements
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 super.onDrawerSlide(drawerView, slideOffset);
                 if (overflowButton == null) {
-
+// #8
                     ArrayList<View> foundViews = new ArrayList<View>();
                     getWindow().getDecorView().findViewsWithText(foundViews,
                             getString(R.string.abc_action_menu_overflow_description),
@@ -110,7 +137,7 @@ public class BloclyActivity extends ActionBarActivity implements
                         overflowButton = foundViews.get(0);
                     }
                 }
-
+// #9a
                 if (overflowButton != null) {
                     overflowButton.setAlpha(1f - slideOffset);
                 }
@@ -125,38 +152,14 @@ public class BloclyActivity extends ActionBarActivity implements
                     }
                     Drawable icon = item.getIcon();
                     if (icon != null) {
-
+// #9b
                         icon.setAlpha((int) ((1f - slideOffset) * 255));
                     }
                 }
             }
         };
         drawerLayout.setDrawerListener(drawerToggle);
-
-        navigationDrawerAdapter = new NavigationDrawerAdapter();
-        navigationDrawerAdapter.setDelegate(this);
-        navigationDrawerAdapter.setDataSource(this);
-        RecyclerView navigationRecyclerView = (RecyclerView) findViewById(R.id.rv_nav_activity_blocly);
-        navigationRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        navigationRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        navigationRecyclerView.setAdapter(navigationDrawerAdapter);
     }
-
-    BloclyApplication.getSharedDataSource().fetchAllFeeds(new DataSource.Callback<List<RssFeed>>() {
-        @Override
-        public void onSuccess(List<RssFeed> rssFeeds) {
-            allFeeds.addAll(rssFeeds);
-            navigationDrawerAdapter.notifyDataSetChanged();
-            // #14
-            getFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.fl_activity_blocly, RssItemListFragment.fragmentForRssFeed(rssFeeds.get(0)))
-                    .commit();
-        }
-
-        @Override
-        public void onError(String errorMessage) {}
-    });
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -177,14 +180,14 @@ public class BloclyActivity extends ActionBarActivity implements
         }
         if (item.getItemId() == R.id.action_share) {
             RssItem itemToShare = expandedItem;
-            if (itemToShare == null) {
+            if (itemToShare == null){
                 return false;
             }
-            // #4
+            //#4
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
-            // #5
-            shareIntent.putExtra(Intent.EXTRA_TEXT,
-                    String.format("%s (%s)", itemToShare.getTitle(), itemToShare.getUrl()));
+            //#5
+            shareIntent.putExtra(Intent.EXTRA_TEXT, String.format("%s (%s)", itemToShare.getTitle(),
+                    itemToShare.getUrl()));
             // #6
             shareIntent.setType("text/plain");
             // #7
@@ -205,27 +208,23 @@ public class BloclyActivity extends ActionBarActivity implements
         return super.onCreateOptionsMenu(menu);
     }
 
-
-
     /*
-      * NavigationDrawerAdapterDelegate
-      */
-
+     * NavigationDrawerAdapterDelegate
+     */
     @Override
-    public void didSelectNavigationOption(NavigationDrawerAdapter adapter, NavigationDrawerAdapter.NavigationOption navigationOption) {
-// #3a
+    public void didSelectNavigationOption(NavigationDrawerAdapter adapter, NavigationDrawerAdapter.NavigationOption
+            navigationOption) {
         drawerLayout.closeDrawers();
         Toast.makeText(this, "Show the " + navigationOption.name(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void didSelectFeed(NavigationDrawerAdapter adapter, RssFeed rssFeed) {
-// #3b
         drawerLayout.closeDrawers();
         Toast.makeText(this, "Show RSS items from " + rssFeed.getTitle(), Toast.LENGTH_SHORT).show();
     }
 
-    /*
+     /*
       * NavigationDrawerAdapterDataSource
       */
 
@@ -233,8 +232,7 @@ public class BloclyActivity extends ActionBarActivity implements
     public List<RssFeed> getFeeds(NavigationDrawerAdapter adapter) {
         return allFeeds;
     }
-
-    /*
+         /*
       * RssListFragment.Delegate
       */
 
@@ -244,7 +242,6 @@ public class BloclyActivity extends ActionBarActivity implements
         animateShareItem(expandedItem != null);
     }
 
-    @Override
     public void onItemContracted(RssItemListFragment rssItemListFragment, RssItem rssItem) {
         if (expandedItem == rssItem) {
             expandedItem = null;
@@ -258,9 +255,9 @@ public class BloclyActivity extends ActionBarActivity implements
         startActivity(visitIntent);
     }
 
-      /*
-      * Private methods
-      */
+    /*
+     * Private Methods
+     */
 
     private void animateShareItem(final boolean enabled) {
         MenuItem shareItem = menu.findItem(R.id.action_share);
@@ -269,7 +266,7 @@ public class BloclyActivity extends ActionBarActivity implements
         }
         shareItem.setEnabled(enabled);
         final Drawable shareIcon = shareItem.getIcon();
-        ValueAnimator valueAnimator = ValueAnimator.ofInt(enabled ? new int[]{0, 255} : new int[]{255, 0});
+        ValueAnimator valueAnimator = ValueAnimator.ofInt(enabled ? new int[]{0,255}: new int[]{255,0});
         valueAnimator.setDuration(getResources().getInteger(android.R.integer.config_shortAnimTime));
         valueAnimator.setInterpolator(new AccelerateDecelerateInterpolator());
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
