@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/list_selector">
 
     <View
         android:id="@+id/v_nav_item_top_padding"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/default_padding"/>
+        android:layout_height="@dimen/default_padding" />
 
     <io.bloc.android.blocly.ui.widget.RobotoTextView
         style="@style/NavigationItem"
@@ -29,5 +27,4 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/divider"/>
-
 </LinearLayout>
