@@ -95,6 +95,7 @@ public class BloclyActivity extends ActionBarActivity
                 if (overflowButton != null) {
                     overflowButton.setAlpha(1f);
 // #7c
+                   
                     overflowButton.setEnabled(true);
                 }
                 if (menu == null) {
