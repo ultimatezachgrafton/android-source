@@ -1,9 +1,7 @@
 package io.bloc.android.blocly.api;
 
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
-import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -138,9 +136,21 @@ public class DataSource {
                 final ArrayList<RssItem> zachArrayList = new ArrayList<RssItem>();
                 GetFeedsNetworkRequest getFeedsNetworkRequest = new GetFeedsNetworkRequest(feedURL);
                 List<GetFeedsNetworkRequest.FeedResponse> feedResponses = getFeedsNetworkRequest.performRequest();
-                GetFeedsNetworkRequest.FeedResponse feed = feedResponses.get(0);
 
-                    for (GetFeedsNetworkRequest.ItemResponse itemResponse : feed.channelItems) {
+                GetFeedsNetworkRequest.FeedResponse newFeedResponse = feedResponses.get(0);
+                long newFeedId = new RssFeedTable.Builder()
+                        .setFeedURL(newFeedResponse.channelFeedURL)
+                        .setSiteURL(newFeedResponse.channelURL)
+                        .setTitle(newFeedResponse.channelTitle)
+                        .setDescription(newFeedResponse.channelDescription)
+                        .insert(databaseOpenHelper.getWritableDatabase());
+
+                Cursor newFeedCursor = rssFeedTable.fetchRow(databaseOpenHelper.getReadableDatabase(), newFeedId);
+                newFeedCursor.moveToFirst();
+                final RssFeed fetchedFeed = feedFromCursor(newFeedCursor);
+                newFeedCursor.close();
+
+                    for (GetFeedsNetworkRequest.ItemResponse itemResponse : newFeedResponse.channelItems) {
                         long itemPubDate = System.currentTimeMillis();
                         DateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy kk:mm:ss z", Locale.ENGLISH);
                         try {
@@ -156,13 +166,14 @@ public class DataSource {
                                 .setLink(itemResponse.itemURL)
                                 .setGUID(itemResponse.itemGUID)
                                 .setPubDate(itemPubDate)
-//                                .setRSSFeed(newFeedId)
+                                .setRSSFeed(newFeedId)
                                 .insert(databaseOpenHelper.getWritableDatabase());
                     }
+
                 final List<RssItem> resultList = new ArrayList<RssItem>();
                 Cursor cursor = RssItemTable.fetchItemsForFeed(
                         databaseOpenHelper.getReadableDatabase(),
-                        rssFeed.getRowId());
+                        fetchedFeed.getRowId());
 
                 if (cursor.moveToFirst()) {
                     do {
