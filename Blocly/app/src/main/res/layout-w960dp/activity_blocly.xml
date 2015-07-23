@@ -15,7 +15,6 @@
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"/>
 
-        // #6
         <View
             android:id="@+id/v_activity_blocly_actionbar_padding"
             android:layout_width="match_parent"
@@ -29,14 +28,14 @@
             android:orientation="horizontal"
             android:layout_marginTop="?attr/actionBarSize">
 
-            // #7
+
             <FrameLayout
                 android:id="@+id/fl_activity_blocly"
                 android:layout_width="400dp"
                 android:layout_height="match_parent"
                 android:layout_marginTop="?attr/actionBarSize"/>
 
-            // #8
+
             <FrameLayout
                 android:id="@+id/fl_activity_blocly_right_pane"
                 android:layout_width="480dp"

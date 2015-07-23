@@ -4,7 +4,11 @@ import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -40,6 +44,7 @@ public class RssItemDetailFragment extends Fragment implements ImageLoadingListe
     TextView title;
     TextView content;
     ProgressBar progressBar;
+    Menu menu;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,11 +74,19 @@ public class RssItemDetailFragment extends Fragment implements ImageLoadingListe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View inflate = inflater.inflate(R.layout.fragment_rss_item_detail, container, false);
+        Toolbar toolbar = (Toolbar) inflate.findViewById(R.id.tb_activity_blocly);
+        ((ActionBarActivity)getActivity()).setSupportActionBar(toolbar);
         headerImage = (ImageView) inflate.findViewById(R.id.iv_fragment_rss_item_detail_header);
         progressBar = (ProgressBar) inflate.findViewById(R.id.pb_fragment_rss_item_detail_header);
         title = (TextView) inflate.findViewById(R.id.tv_fragment_rss_item_detail_title);
         content = (TextView) inflate.findViewById(R.id.tv_fragment_rss_item_detail_content);
         return inflate;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+        menuInflater.inflate(R.menu.fragment, menu);
+        this.menu = menu;
     }
 
      /*

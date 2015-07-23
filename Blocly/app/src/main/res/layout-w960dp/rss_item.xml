@@ -5,7 +5,6 @@
     android:padding="16dp"
     android:background="@drawable/list_selector">
 
-    // #1
     <io.bloc.android.blocly.ui.widget.RobotoTextView
         style="@style/Headline"
         android:id="@+id/tv_rss_item_callout"
